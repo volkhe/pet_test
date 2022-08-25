@@ -1,86 +1,223 @@
 import { test, expect } from '@playwright/test';
-test('Авторизация', async({page})=>{
+// Домашнее задание "Проверка страницы авторизации"
+// Задание 1
+test('Проверить url страницы авторизации', async({page})=>{
     await page.goto('https://jpetstore.aspectran.com/account/signonForm')
     await expect(page).toHaveURL('https://jpetstore.aspectran.com/account/signonForm')
-    const locator = page.locator('[id="Signon"]')
-    await expect(locator).toBeVisible()
-    const panel = page.locator('[class="panel"]')
-    await expect(panel).toBeVisible()
-    const username = page.locator('[name="username"]')
-    await expect(username).toBeVisible()
-    await username.click()
-    await username.type('redfoxa')
-    const password = page.locator('[name="password"]')
-    await expect(password).toBeVisible()
-    await password.click()
-    await password.type('redfoxa')
-    const login = page.locator('[class="button-bar"]')
-    await expect(login).toBeVisible()
-    await login.click()
-    const panelfailed = page.locator('[class="panel failed"]')
-    await expect(panelfailed).toBeVisible()
-    await expect(panelfailed).toContainText('Invalid username or password.  Signon failed.')
-    const register = page.locator('[class="panel register"]')
-    await expect(register).toBeVisible()
-    await username.click()
-    await username.press('Control+A')
-    await username.press('Backspace')
-    await username.type('redfoxa')
-    await password.click()
-    await password.press('Control+A')
-    await password.press('Backspace')
-    await password.type('Mashinarium12')
-    await login.click()
-    await expect(panelfailed).toBeVisible()
-    await username.click()
-    await username.press('Control+A')
-    await username.press('Backspace')
-    await username.type('redfoxa1')
-    await password.click()
-    await password.press('Control+A')
-    await password.press('Backspace')
-    await password.type('Mashinarium')
-    await login.click()
-    await expect(panelfailed).toBeVisible()
-    await username.click()
-    await username.press('Control+A')
-    await username.press('Backspace')
-    await username.type('')
-    await password.click()
-    await password.press('Control+A')
-    await password.press('Backspace')
-    await password.type('')
-    await login.click()
-    await expect(panelfailed).toBeVisible()
-    await username.click()
-    await username.press('Control+A')
-    await username.press('Backspace')
-    await username.type('redfoxa')
-    await password.click()
-    await password.press('Control+A')
-    await password.press('Backspace')
-    await password.type('')
-    await login.click()
-    await expect(panelfailed).toBeVisible()
-    await username.click()
-    await username.press('Control+A')
-    await username.press('Backspace')
-    await username.type('')
-    await password.click()
-    await password.press('Control+A')
-    await password.press('Backspace')
-    await password.type('Mashinarium')
-    await login.click()
-    await expect(panelfailed).toBeVisible()
-    await username.click()
-    await username.press('Control+A')
-    await username.press('Backspace')
-    await username.type('redfoxa')
-    await password.click()
-    await password.press('Control+A')
-    await password.press('Backspace')
-    await password.type('Mashinarium')
-    await login.click()
-    const welcome = page.locator('[id="WelcomeContent"]')
-    await expect(welcome).toBeVisible() 
 })
+// Задание 2
+
+test('Наличие поля username', async({page})=>{
+    await page.goto('https://jpetstore.aspectran.com/account/signonForm')
+    await expect(page).toHaveURL('https://jpetstore.aspectran.com/account/signonForm')
+    const locator = page.locator('[name="username"]')
+    await expect(locator).toBeVisible()
+})
+
+test('Наличие поля password', async({page})=>{
+    await page.goto('https://jpetstore.aspectran.com/account/signonForm')
+    await expect(page).toHaveURL('https://jpetstore.aspectran.com/account/signonForm')
+    const locator = page.locator('[name="password"]')
+    await expect(locator).toBeVisible()
+})
+
+test('Наличие кнопки login', async({page})=>{
+    await page.goto('https://jpetstore.aspectran.com/account/signonForm')
+    await expect(page).toHaveURL('https://jpetstore.aspectran.com/account/signonForm')
+    const locator = page.locator('[class="button-bar"]').last()
+    await expect(locator).toBeVisible()
+})
+
+test('Наличие панели регистрации', async({page})=>{
+    await page.goto('https://jpetstore.aspectran.com/account/signonForm')
+    await expect(page).toHaveURL('https://jpetstore.aspectran.com/account/signonForm')
+    const locator = page.locator('[class="panel register"]')
+    await expect(locator).toBeVisible()
+})
+// Задание 3
+
+test('Валидные данные в полях → авторизация успешна', async({page})=>{
+    await page.goto('https://jpetstore.aspectran.com/account/signonForm')
+    await expect(page).toHaveURL('https://jpetstore.aspectran.com/account/signonForm')
+    // Очищаем поле и вводим username
+    const fieldUsername = page.locator('[name="username"]')
+    await expect(fieldUsername).toBeVisible()
+    await fieldUsername.click()
+    await fieldUsername.press('Control+A')
+    await fieldUsername.press('Backspace')
+    await fieldUsername.type('redfoxa')
+    // Очищаем поле и вводим passsword
+    const fieldPassword = page.locator('[name="password"]')
+    await expect(fieldPassword).toBeVisible()
+    await fieldPassword.click()
+    await fieldPassword.press('Control+A')
+    await fieldPassword.press('Backspace')
+    await fieldPassword.type('Mashinarium')
+    // Нажимаем login
+    const buttonLogin = page.locator('[class="button-bar"]').last()
+    await expect(buttonLogin).toBeVisible()
+    await buttonLogin.click()
+   // Проверяем успешность авторизации
+   const elementWelcome = page.locator('[id="WelcomeContent"]')
+    await expect(elementWelcome).toBeVisible()
+})
+
+test('Невалидные данные в полях → ошибка, авторизация не успешна', async({page})=>{
+
+    await page.goto('https://jpetstore.aspectran.com/account/signonForm')
+    await expect(page).toHaveURL('https://jpetstore.aspectran.com/account/signonForm')
+    // Очищаем поле и вводим username
+    const fieldUsername = page.locator('[name="username"]')
+    await expect(fieldUsername).toBeVisible()
+    await fieldUsername.click()
+    await fieldUsername.press('Control+A')
+    await fieldUsername.press('Backspace')
+    await fieldUsername.type('redfoxa11')
+    // Очищаем поле и вводим password
+    const fieldPassword = page.locator('[name="password"]')
+    await expect(fieldPassword).toBeVisible()
+    await fieldPassword.click()
+    await fieldPassword.press('Control+A')
+    await fieldPassword.press('Backspace')
+    await fieldPassword.type('Mashinarium11')
+    // Нажимаем Login
+    const buttonLogin = page.locator('[class="button-bar"]').last()
+    await expect(buttonLogin).toBeVisible()
+    await buttonLogin.click()
+    // Проверяем ошибку при авторизации
+    const elementLoginFailed = page.locator('[class="panel failed"]')
+    await expect(elementLoginFailed).toBeVisible()
+})
+
+test('Поле username - валидно, поле password - невалидно → ошибка, авторизация не успешна', async({page})=>{
+
+    await page.goto('https://jpetstore.aspectran.com/account/signonForm')
+    await expect(page).toHaveURL('https://jpetstore.aspectran.com/account/signonForm')
+    // Очищаем поле и вводим username
+    const fieldUsername = page.locator('[name="username"]')
+    await expect(fieldUsername).toBeVisible()
+    await fieldUsername.click()
+    await fieldUsername.press('Control+A')
+    await fieldUsername.press('Backspace')
+    await fieldUsername.type('redfoxa')
+    // Очищаем поле и вводим password
+    const fieldPassword = page.locator('[name="password"]')
+    await expect(fieldPassword).toBeVisible()
+    await fieldPassword.click()
+    await fieldPassword.press('Control+A')
+    await fieldPassword.press('Backspace')
+    await fieldPassword.type('Mashinarium11')
+    // Нажимаем Login
+    const buttonLogin = page.locator('[class="button-bar"]').last()
+    await expect(buttonLogin).toBeVisible()
+    await buttonLogin.click()
+    // Проверяем ошибку при авторизации
+    const elementLoginFailed = page.locator('[class="panel failed"]')
+    await expect(elementLoginFailed).toBeVisible()
+})
+
+test('Поле username - невалидно, поле password - валидно → ошибка, авторизация не успешна', async({page})=>{
+
+    await page.goto('https://jpetstore.aspectran.com/account/signonForm')
+    await expect(page).toHaveURL('https://jpetstore.aspectran.com/account/signonForm')
+    // Очищаем поле и вводим username
+    const fieldUsername = page.locator('[name="username"]')
+    await expect(fieldUsername).toBeVisible()
+    await fieldUsername.click()
+    await fieldUsername.press('Control+A')
+    await fieldUsername.press('Backspace')
+    await fieldUsername.type('redfoxa11')
+    // Очищаем поле и вводим password
+    const fieldPassword = page.locator('[name="password"]')
+    await expect(fieldPassword).toBeVisible()
+    await fieldPassword.click()
+    await fieldPassword.press('Control+A')
+    await fieldPassword.press('Backspace')
+    await fieldPassword.type('Mashianrium')
+    // Нажимаем Login
+    const buttonLogin = page.locator('[class="button-bar"]').last()
+    await expect(buttonLogin).toBeVisible()
+    await buttonLogin.click()
+    // Проверяем ошибку при авторизации
+    const elementLoginFailed = page.locator('[class="panel failed"]')
+    await expect(elementLoginFailed).toBeVisible()
+})
+
+test('Поля пустые → ошибка, авторизация не успешна', async({page})=>{
+
+    await page.goto('https://jpetstore.aspectran.com/account/signonForm')
+    await expect(page).toHaveURL('https://jpetstore.aspectran.com/account/signonForm')
+    // Очищаем поле username
+    const fieldUsername = page.locator('[name="username"]')
+    await expect(fieldUsername).toBeVisible()
+    await fieldUsername.click()
+    await fieldUsername.press('Control+A')
+    await fieldUsername.press('Backspace')
+    // Очищаем поле password
+    const fieldPassword = page.locator('[name="password"]')
+    await expect(fieldPassword).toBeVisible()
+    await fieldPassword.click()
+    await fieldPassword.press('Control+A')
+    await fieldPassword.press('Backspace')
+    // Нажимаем Login
+    const buttonLogin = page.locator('[class="button-bar"]').last()
+    await expect(buttonLogin).toBeVisible()
+    await buttonLogin.click()
+    // Проверяем ошибку при авторизации
+    const elementLoginFailed = page.locator('[class="panel failed"]')
+    await expect(elementLoginFailed).toBeVisible()
+})
+
+test('Поле username - валидно, поле password - пустое → ошибка, авторизация не успешна', async({page})=>{
+
+    await page.goto('https://jpetstore.aspectran.com/account/signonForm')
+    await expect(page).toHaveURL('https://jpetstore.aspectran.com/account/signonForm')
+    // Вводим username
+    const fieldUsername = page.locator('[name="username"]')
+    await expect(fieldUsername).toBeVisible()
+    await fieldUsername.click()
+    await fieldUsername.press('Control+A')
+    await fieldUsername.press('Backspace')
+    await fieldUsername.type('j2ee')
+    // Очищаем поле password
+    const fieldPassword = page.locator('[name="password"]')
+    await expect(fieldPassword).toBeVisible()
+    await fieldPassword.click()
+    await fieldPassword.press('Control+A')
+    await fieldPassword.press('Backspace')
+    // Нажимаем Login
+    const buttonLogin = page.locator('[class="button-bar"]').last()
+    await expect(buttonLogin).toBeVisible()
+    await buttonLogin.click()
+    // Проверяем ошибку при авторизации
+    const elementLoginFailed = page.locator('[class="panel failed"]')
+    await expect(elementLoginFailed).toBeVisible()
+})
+
+test('Поле username - пустое, поле password - валидно → ошибка, авторизация не успешна', async({page})=>{
+
+    await page.goto('https://jpetstore.aspectran.com/account/signonForm')
+    await expect(page).toHaveURL('https://jpetstore.aspectran.com/account/signonForm')
+    // Очищаем поле username
+    const fieldUsername = page.locator('[name="username"]')
+    await expect(fieldUsername).toBeVisible()
+    await fieldUsername.click()
+    await fieldUsername.press('Control+A')
+    await fieldUsername.press('Backspace')
+    // Очищаем поле и вводим password
+    const fieldPassword = page.locator('[name="password"]')
+    await expect(fieldPassword).toBeVisible()
+    await fieldPassword.click()
+    await fieldPassword.press('Control+A')
+    await fieldPassword.press('Backspace')
+    await fieldPassword.type('j2ee')
+    // Нажимаем Login
+    const buttonLogin = page.locator('[class="button-bar"]').last()
+    await expect(buttonLogin).toBeVisible()
+    await buttonLogin.click()
+    // Проверяем ошибку при авторизации
+    const elementLoginFailed = page.locator('[class="panel failed"]')
+    await expect(elementLoginFailed).toBeVisible()
+})
+    
+    
