@@ -1,4 +1,6 @@
 import { test, expect } from '@playwright/test';
+/*
+// Урок 2. Первый тест
 // Домашнее задание "Проверка страницы авторизации"
 // Задание 1
 test('Проверить url страницы авторизации', async({page})=>{
@@ -219,5 +221,43 @@ test('Поле username - пустое, поле password - валидно → �
     const elementLoginFailed = page.locator('[class="panel failed"]')
     await expect(elementLoginFailed).toBeVisible()
 })
-    
-    
+*/
+ // Урок 3. Способы написания селекторов
+ // Задание 1
+    test('Создание локаторов с помощью текста', async({page})=>{
+    await page.goto('https://jpetstore.aspectran.com/catalog/')
+    const fish = page.locator('text=Fish').nth(0)
+    await expect(fish).toBeVisible()
+    const Dogs = page.locator('text=Dogs').nth(0)
+    await expect(Dogs).toBeVisible()
+    const Reptiles = page.locator('text=Reptiles').nth(0)
+    await expect(Reptiles).toBeVisible()
+    const Cats = page.locator('text=Cats').nth(0)
+    await expect(Cats).toBeVisible()
+    const Birds = page.locator('text=Birds').nth(0)
+    await expect(Birds).toBeVisible()
+})
+// Задание 2
+test('CSS селекторы', async({page})=>{
+    await page.goto('https://jpetstore.aspectran.com/catalog/')
+    //Элемент с ID
+    const QuickLinks = page.locator ('#QuickLinks')
+    await expect(QuickLinks).toBeVisible()
+    // Элемент с классом
+    const Masthead = page.locator('.grid-x').nth(0)
+    await expect(Masthead).toBeVisible()
+})
+// Задание 3
+test('Фильтрация локаторов', async({page})=>{
+    await page.goto('https://jpetstore.aspectran.com/account/signonForm')
+    //Фильтрация по тексту
+    const loginButton = page.locator('.button', {hasText:'Login'})
+    await expect(loginButton).toBeVisible()
+    //Фильтрация по другому локатору
+    const panel = page.locator('#Signon', {has: page.locator('.panel')})
+    await expect(panel).toBeVisible()
+    // Обращение к дочернему элементу (родительский - header, дочерний - menu) 
+    await page.goto('https://jpetstore.aspectran.com/catalog/')
+    const header = page.locator('[id="Header"]>>[id="Menu"]')
+    await expect(header).toBeVisible()
+})

@@ -9,4 +9,4 @@ await locator.type('Привет')
 const search = page.locator('[class="input-group-button"]').last()
 await expect(search).toBeVisible()
 await expect(locator).toHaveText('Search')
-})*/
+}) */
