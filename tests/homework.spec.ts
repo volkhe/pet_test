@@ -1,6 +1,7 @@
-/*import { test, expect } from '@playwright/test';
+import { test, expect } from '@playwright/test';
 
 test.describe('Общие проверки', async()=>{
+
 
 test.beforeEach(async({page})=>{
 await page.goto('https://jpetstore.aspectran.com/account/signonForm')
@@ -271,4 +272,4 @@ test.describe('Урок 4', async()=>{
         await expect(questions).toHaveCSS('background-color', 'rgb(245, 245, 245)')
     })
 })
-})*/
+})
